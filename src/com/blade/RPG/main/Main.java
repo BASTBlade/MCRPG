@@ -31,7 +31,40 @@ public class Main extends JavaPlugin implements Listener{
 		this.logger.info("["+pdfFile.getName()+"]" + message);
 	}
 	private boolean Initiate() {
-		return true;
+		if(loadScoreBoards()){
+			if(loadNPCS()){
+				if(loadItems()){
+					if(loadPlayerData()){
+						return true;
+						
+					}else{
+						return false;
+					}
+				}else{
+					return false;
+				}
+			}else{
+				return false;
+			}
+		}else{
+		return false;
+		}
+	}
+	private boolean loadPlayerData() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	private boolean loadItems() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	private boolean loadNPCS() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	private boolean loadScoreBoards() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
