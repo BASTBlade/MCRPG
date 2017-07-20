@@ -1,0 +1,9 @@
+name: MCRPG
+main: com.blade.RPG.main.Main
+version: 0.1
+commands:
+    command:
+        description: this is a description
+        usage: /command
+        permission: MCRPG.cmd
+        permission-message: You do not have the permission to use this command.
