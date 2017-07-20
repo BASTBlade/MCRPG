@@ -13,15 +13,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener{
 	
-	PluginDescriptionFile pdfFile;
+	PluginDescriptionFile pdfFile = this.getDescription();
 	public final Logger logger = Logger.getLogger("Minecraft");
 	public void onDisable(){
-		pdfFile = this.getDescription();
 		logMessage("plugin disabled!");
 	}
 	@Override
 	public void onEnable(){
-		pdfFile = this.getDescription();
 		logMessage("An attempt has been made to load the plugin.");
 		getServer().getPluginManager().registerEvents(this, this);
 		if(Initiate()){
