@@ -191,7 +191,6 @@ public class FirstRun {
 			Type.appendChild(doc.createTextNode("Skill Type"));
 			Skill.appendChild(Type);
 			
-
 			// write the content into xml file
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
