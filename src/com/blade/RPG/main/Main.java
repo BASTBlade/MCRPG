@@ -72,6 +72,6 @@ public class Main extends JavaPlugin implements Listener{
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
 		
 		
-		return false;
+		return true;
 	}
 }
