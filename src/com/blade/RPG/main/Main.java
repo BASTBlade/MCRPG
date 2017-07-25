@@ -23,7 +23,7 @@ public class Main extends JavaPlugin implements Listener{
 		logMessage("An attempt has been made to load the plugin.");
 		getServer().getPluginManager().registerEvents(this, this);
 		if(Initiate()){
-			logMessage("All data succesfully loaded");
+			logMessage("All data succesfully loaded.");
 		}
 	}
 
