@@ -51,7 +51,9 @@ public class Main extends JavaPlugin implements Listener{
 		}
 	}
 	private boolean loadPlayerData() {
-		// TODO Auto-generated method stub
+		if(FirstRun.checkFirstRun(this)){
+			logMessage("Files created.");
+		}
 		return false;
 	}
 	private boolean loadItems() {
