@@ -2,10 +2,6 @@ package com.blade.RPG.main;
 
 import java.util.logging.Logger;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -52,26 +48,29 @@ public class Main extends JavaPlugin implements Listener{
 	}
 	private boolean loadPlayerData() {
 		if(FirstRun.checkFirstRun(this)){
-			logMessage("Files created.");
+			logMessage("First run initiated.");
+			return true;
+		}else{
+			logMessage("Loading player files!");
+			return false;
 		}
-		return false;
 	}
 	private boolean loadItems() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	private boolean loadNPCS() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	private boolean loadScoreBoards() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
-	@EventHandler(priority = EventPriority.HIGHEST)
+	/*@EventHandler
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
 		
 		
 		return true;
-	}
+	}*/
 }
