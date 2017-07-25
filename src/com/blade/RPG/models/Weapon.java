@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
+// This is the class for weapons in the RPG gamemode. There will be a file where people can add weapons with a certain layout which will be imported in the gamemode.
+// These weapons are able to be used whilst playing.
 public class Weapon {
 	private Enchantment[] weaponEnchantments;
 	private List<String> weaponLore;
