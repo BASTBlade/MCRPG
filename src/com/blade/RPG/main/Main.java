@@ -2,9 +2,14 @@ package com.blade.RPG.main;
 
 import java.util.logging.Logger;
 
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.blade.RPG.models.Weapon;
 
 
 public class Main extends JavaPlugin implements Listener{
@@ -21,18 +26,39 @@ public class Main extends JavaPlugin implements Listener{
 		if(Initiate()){
 			logMessage("All data succesfully loaded.");
 		}
+		test();
 	}
 
+	private void test() {
+		ItemStack item = new ItemStack(Material.BOW,1);
+		item.addEnchantment(Enchantment.ARROW_DAMAGE, 5);
+		item.addEnchantment(Enchantment.ARROW_FIRE, 1);
+		item.addEnchantment(Enchantment.ARROW_INFINITE, 1);
+		Weapon wep = new Weapon(item.getType());
+		wep.setWeaponLore("Test lore hhh");
+		wep.setWeaponName("Test weapon name");
+		wep.setWeaponValue(500);
+		wep.setWeaponEnchantments(item.getEnchantments());
+		Weapon.AddWeapon(this, wep);
+	}
 	private void logMessage(String message){
 		this.logger.info("["+pdfFile.getName()+"]" + message);
 	}
 	private boolean Initiate() {
-		if(loadScoreBoards()){
-			if(loadNPCS()){
-				if(loadItems()){
-					if(loadPlayerData()){
-						return true;
-						
+		if(FirstRun.checkFirstRun(this)){
+			logMessage("First run initiated.");
+			return true;
+		}
+		else{
+			if(loadScoreBoards()){
+				if(loadNPCS()){
+					if(loadItems()){
+						if(loadPlayerData()){
+							return true;
+							
+						}else{
+							return false;
+						}
 					}else{
 						return false;
 					}
@@ -40,31 +66,20 @@ public class Main extends JavaPlugin implements Listener{
 					return false;
 				}
 			}else{
-				return false;
+			return false;
 			}
-		}else{
-		return false;
 		}
 	}
 	private boolean loadPlayerData() {
-		if(FirstRun.checkFirstRun(this)){
-			logMessage("First run initiated.");
-			return true;
-		}else{
-			logMessage("Loading player files!");
-			return false;
-		}
+		return true;
 	}
 	private boolean loadItems() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	private boolean loadNPCS() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	private boolean loadScoreBoards() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	/*@EventHandler

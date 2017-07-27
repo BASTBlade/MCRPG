@@ -73,7 +73,7 @@ public class FirstRun {
 			StreamResult result = new StreamResult(new File(server.getDataFolder()+ "/monsters.xml"));
 				
 			transformer.transform(source, result);
-
+			
 			
 		} 
 		catch (ParserConfigurationException pce) {

@@ -1,16 +1,30 @@
 package com.blade.RPG.models;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.io.File;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 // This is the class for weapons in the RPG gamemode. There will be a file where people can add weapons with a certain layout which will be imported in the gamemode.
 // These weapons are able to be used whilst playing.
 public class Weapon {
-	private Enchantment[] weaponEnchantments;
-	private List<String> weaponLore;
+	private static Map<Enchantment,Integer> weaponEnchantments;
+	private String weaponLore;
 	private String weaponName;
 	private ItemStack weapon;
 	private Integer weaponValue;
@@ -42,20 +56,20 @@ public class Weapon {
 		this.weaponName = weaponName;
 	}
 
-	public List<String> getWeaponLore() {
+	public String getWeaponLore() {
 		return weaponLore;
 	}
 
-	public void setWeaponLore(List<String> weaponLore) {
+	public void setWeaponLore(String weaponLore) {
 		this.weaponLore = weaponLore;
 	}
 
-	public Enchantment[] getWeaponEnchantments() {
+	public static Map<Enchantment,Integer> getWeaponEnchantments() {
 		return weaponEnchantments;
 	}
 
-	public void setWeaponEnchantments(Enchantment[] weaponEnchantments) {
-		this.weaponEnchantments = weaponEnchantments;
+	public void setWeaponEnchantments(Map<Enchantment,Integer> weaponEnchantments) {
+		Weapon.weaponEnchantments = weaponEnchantments;
 	}
 
 	public Integer getWeaponValue() {
@@ -65,4 +79,70 @@ public class Weapon {
 	public void setWeaponValue(Integer weaponValue) {
 		this.weaponValue = weaponValue;
 	}
+	
+	@SuppressWarnings("deprecation")
+	public static boolean AddWeapon(JavaPlugin server,Weapon weapon){
+		DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder icBuilder;
+		try{
+			icBuilder = icFactory.newDocumentBuilder();
+			Document doc = icBuilder.parse(new File(server.getDataFolder()+ "/weapons.xml"));
+			Element mainRootElement = doc.getDocumentElement();
+			// Create the Monster Attribute.
+			Element Weapon = doc.createElement("Weapon");
+			mainRootElement.appendChild(Weapon);
+			// Set the Custom name for Monster.
+			Weapon.setAttribute("WeaponName",weapon.getWeaponName());
+
+			// Create the Monster Level field.
+			Element MaterialID = doc.createElement("MaterialID");
+			MaterialID.appendChild(doc.createTextNode(weapon.getWeapon().getType().getId() +""));
+			Weapon.appendChild(MaterialID);
+						
+			// Create the Monster Level field.
+			Element Value = doc.createElement("Value");
+			Value.appendChild(doc.createTextNode(weapon.getWeaponValue() + ""));
+			Weapon.appendChild(Value);
+			
+			Element Lore = doc.createElement("Lore");
+			Lore.appendChild(doc.createTextNode(weapon.weaponLore));
+			Weapon.appendChild(Lore);
+			
+			// Create the Monster Level field.
+			Element Enchantments = doc.createElement("Enchantments");
+			Iterator<Entry<Enchantment, Integer>> it = getWeaponEnchantments().entrySet().iterator();
+			while (it.hasNext()) {
+			    Entry<Enchantment, Integer> e = it.next();
+				Enchantments.appendChild(doc.createTextNode(e.getKey().getName()+ "-" + e.getValue() + " "));
+			}
+			Weapon.appendChild(Enchantments);
+									
+
+						// write the content into xml file
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(new File(server.getDataFolder()+ "/weapons.xml"));
+							
+			transformer.transform(source, result);
+
+		}
+		catch(Exception e){
+			server.getLogger().info(e.getMessage());
+			return false;
+		}
+		return true;
+	}
+
+
+	/*public void setWeaponEnchantments(Map<Enchantment, Integer> enchantments) {
+		
+		Enchantment[] enchs = new Enchantment[10];
+		int i = 0;
+		Iterator<Entry<Enchantment, Integer>> it = enchantments.entrySet().iterator();
+		while (it.hasNext()) {
+		    enchs[i] = it.next().getKey();
+		}
+		setWeaponEnchantments(enchs);
+	}*/
 }
