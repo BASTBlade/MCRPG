@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.soap.Node;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -14,7 +15,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
+import org.w3c.dom.NodeList;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -80,7 +81,33 @@ public class Weapon {
 		this.weaponValue = weaponValue;
 	}
 	
-	@SuppressWarnings("deprecation")
+	
+	public static boolean RemoveWeapon(JavaPlugin server, Weapon weapon){
+		DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder icBuilder;
+		try{
+			icBuilder = icFactory.newDocumentBuilder();
+			Document doc = icBuilder.parse(new File(server.getDataFolder()+ "/weapons.xml"));
+			NodeList nl = doc.getElementsByTagName("name");
+			for(int i = 0; i <= nl.getLength(); i++){
+				Node node = (Node) nl.item(i);
+				Element e = (Element)node;
+				if(e.getAttribute("name").equalsIgnoreCase(weapon.getWeaponName())){
+					e.removeChild(node);
+				}
+			}
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(new File(server.getDataFolder()+ "/weapons.xml"));
+							
+			transformer.transform(source, result);
+		}
+		catch(Exception e){
+			server.getLogger().info(e.getMessage());
+		}
+		return true;
+	}
 	public static boolean AddWeapon(JavaPlugin server,Weapon weapon){
 		DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder icBuilder;
@@ -96,7 +123,7 @@ public class Weapon {
 
 			// Create the Monster Level field.
 			Element MaterialID = doc.createElement("MaterialID");
-			MaterialID.appendChild(doc.createTextNode(weapon.getWeapon().getType().getId() +""));
+			MaterialID.appendChild(doc.createTextNode(weapon.getWeapon().getType() +""));
 			Weapon.appendChild(MaterialID);
 						
 			// Create the Monster Level field.
@@ -133,16 +160,4 @@ public class Weapon {
 		}
 		return true;
 	}
-
-
-	/*public void setWeaponEnchantments(Map<Enchantment, Integer> enchantments) {
-		
-		Enchantment[] enchs = new Enchantment[10];
-		int i = 0;
-		Iterator<Entry<Enchantment, Integer>> it = enchantments.entrySet().iterator();
-		while (it.hasNext()) {
-		    enchs[i] = it.next().getKey();
-		}
-		setWeaponEnchantments(enchs);
-	}*/
 }
