@@ -21,5 +21,11 @@ MCRPG is a minecraft gamemode which will consist of a skill based system. With t
 The gamemode will potentially be highly adaptive and customizable to the ideas and creations you want it to be. 
 
 ## Models/Objects
+- Weapon
+- Skill
+- User
+- Quest
+- RPGClass
+- Monster
 
 ## Functionality
